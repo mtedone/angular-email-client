@@ -9,6 +9,8 @@ interface UsernameAvailableResponse {
   providedIn: 'root',
 })
 export class AuthService {
+  private baseUrl = 'https://api.angular-email.com';
+
   constructor(private http: HttpClient) {}
 
   usernameAvailable(username: string) {
@@ -17,6 +19,13 @@ export class AuthService {
       {
         username: username,
       }
+    );
+  }
+
+  signup(credentials: any) {
+    return this.http.post<any>(
+      'https://api.angular-email.com/auth/signup',
+      credentials
     );
   }
 }

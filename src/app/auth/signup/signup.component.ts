@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, Validator } from '@angular/forms';
 import { MatchPassword } from '../validators/match-password';
 import { UniqueUsername } from '../validators/unique-username';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-signup',
@@ -11,7 +12,8 @@ import { UniqueUsername } from '../validators/unique-username';
 export class SignupComponent implements OnInit {
   constructor(
     private matchValidator: MatchPassword,
-    private uniqueUsername: UniqueUsername
+    private uniqueUsername: UniqueUsername,
+    private authService: AuthService
   ) {}
   authForm = new FormGroup(
     {
@@ -40,4 +42,24 @@ export class SignupComponent implements OnInit {
   );
 
   ngOnInit(): void {}
+
+  showErrors() {
+    const passwordTouched = this.authForm.get('password').touched;
+    const passwordConfirmationTouched = this.authForm.get(
+      'passwordConfirmation'
+    ).touched;
+    return (
+      this.authForm.errors && passwordTouched && passwordConfirmationTouched
+    );
+  }
+
+  onSubmit() {
+    if (this.authForm.invalid) {
+      return;
+    }
+
+    this.authService.signup(this.authForm.value).subscribe((response) => {
+      console.log(response);
+    });
+  }
 }

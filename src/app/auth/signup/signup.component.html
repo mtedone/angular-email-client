@@ -1,22 +1,30 @@
 <h3>Create An Account</h3>
-<form [formGroup]="authForm" class="ui form">
-  <!-- <div class="field">
-    <label>Username</label>
-    <input formControlName="username" />
-  </div> -->
-  <app-input label="Username" [control]="authForm.get('username')"></app-input>
-  {{ authForm.get("username").errors | json }}
-  <div class="field">
-    <label>Password</label>
-    <input formControlName="password" />
-  </div>
-  {{ authForm.get("password").errors | json }}
-  <div class="field">
-    <label>Password Confirmation</label>
-    <input formControlName="passwordConfirmation" />
-  </div>
-  {{ authForm.get("passwordConfirmation").errors | json }}
-  <button class="ui submit button primary">Submit</button>
+<form [formGroup]="authForm" class="ui form" (ngSubmit)="onSubmit()">
+  <app-input
+    label="Username"
+    [control]="authForm.get('username')"
+    inputType="text"
+  ></app-input>
+  <app-input
+    label="Password"
+    [control]="authForm.get('password')"
+    inputType="password"
+  ></app-input>
+  <app-input
+    label="Password Confirmation"
+    [control]="authForm.get('passwordConfirmation')"
+    inputType="password"
+  ></app-input>
 
-  {{ authForm.errors | json }}
+  <div class="ui red basic label" *ngIf="showErrors()">
+    <p *ngIf="authForm.errors.passwordsDontMatch">
+      Password and Password Confirmation must match
+    </p>
+  </div>
+
+  <div>
+    <button class="ui submit button primary" [disabled]="authForm.invalid">
+      Submit
+    </button>
+  </div>
 </form>
