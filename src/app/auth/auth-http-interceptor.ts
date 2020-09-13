@@ -7,7 +7,7 @@ import {
   HttpEventType,
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { tap, filter } from 'rxjs/operators';
 
 @Injectable()
 export class AuthHttpInterceptor implements HttpInterceptor {
@@ -19,12 +19,6 @@ export class AuthHttpInterceptor implements HttpInterceptor {
       withCredentials: true,
     });
 
-    return next.handle(modifiedReq).pipe(
-      tap((val) => {
-        if (val.type === HttpEventType.Response) {
-          console.log('Got a response', val);
-        }
-      })
-    );
+    return next.handle(modifiedReq);
   }
 }
