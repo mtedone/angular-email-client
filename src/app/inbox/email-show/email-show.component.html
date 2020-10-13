@@ -9,3 +9,6 @@
     </div>
   </div>
 </div>
+<div class="ui divider"></div>
+<div [innerHTML]="email.html" *ngIf="email.html; else textEmail"></div>
+<div [innerHTML]="email.text" #textEmail></div>
